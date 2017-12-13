@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learning Vue Like a Boss!</title>
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- js -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+  <!-- our template -->
+  <section id="app" class="hero is-fullheight is-dark">
+  <div class="hero-body">
+  <div class="container">
+
+    <!-- search box -->
+    <input 
+      type="text" 
+      class="input is-large" 
+      placeholder="Search all the GIFs" 
+      @keyup="searchGifs" 
+      v-model="query">
+
+    <!-- grid of gifs -->
+    <div class="grid">
+
+      <!-- loop over the gifs -->
+      <div class="grid-item" v-for="gif in gifs">
+        <a :href="gif.bitly_url">
+          <img :src="gif.images.original.url"> 
+        </a>
+      </div>
+
+    </div>
+    
+  </div>
+  </div>
+  </section>
+
+  <!-- our javascript -->
+  <script>
+    const app = new Vue({
+      el: '#app',
+      data: {
+        apiUrl: 'http://api.giphy.com/v1/gifs',
+        apiKey: '80bfcbf357864cd18518c324f47a7098',
+        gifs:   [],
+        query:  ''
+      },
+      methods: {
+        getTrendingGifs: function() {
+          axios.get(`${this.apiUrl}/trending?api_key=${this.apiKey}?limit=15`)
+            .then(response => this.gifs = response.data.data);
+        },
+        searchGifs: function() {
+          axios.get(`${this.apiUrl}/search?api_key=${this.apiKey}&q=${this.query}?limit=15`)
+            .then(response => this.gifs = response.data.data);
+        }
+      },
+      created: function() {
+        this.getTrendingGifs();
+      }
+    });
+  </script>
+</body>
+</html>

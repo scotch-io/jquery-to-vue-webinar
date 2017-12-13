@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learning Vue Like a Boss!</title>
+
+  <!-- css -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.css">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- js -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <!-- our template -->
+  <section class="hero is-fullheight is-dark">
+  <div class="hero-body">
+  <div class="container">
+
+    <!-- search box -->
+    <input type="text" class="input is-large" placeholder="Search all the GIFs">
+
+    <!-- grid of gifs -->
+    <div class="grid"></div>
+    
+  </div>
+  </div>
+  </section>
+
+  <!-- our javascript -->
+  <script>
+    // grab the things we need ===========================
+    const queryInput    = document.querySelector('input');
+    const gifsContainer = document.querySelector('.grid');
+    const apiUrl        = 'http://api.giphy.com/v1/gifs';
+    const apiKey        = '80bfcbf357864cd18518c324f47a7098';
+
+    // listen for events ===========================
+    queryInput.addEventListener('keyup', searchGifs);
+
+    // define our functions ===========================
+    function getTrendingGifs() {
+      const url = `${apiUrl}/trending?api_key=${apiKey}`;
+
+      axios.get(url)
+        .then(response => fillGrid(response.data.data));
+    }
+
+    /**
+     * Search for gifs
+     */
+    function searchGifs(e) {
+      const query = e.target.value;
+      const url   = `${apiUrl}/search?api_key=${apiKey}&q=${query}`;
+
+      axios.get(url)
+        .then(response => fillGrid(response.data.data));
+    }
+
+    /**
+     * Fill the grid with everything we need
+     */
+    function fillGrid(gifs) {
+      gifsContainer.innerHTML = '';
+
+      gifs.forEach(gif => {
+        const gifBox = document.createElement('div');
+
+        gifBox.classList.add('grid-item');
+        gifBox.innerHTML = `
+          <a href="${gif.bitly_url }">
+            <img src="${gif.images.original.url }"> 
+          </a>
+        `;
+
+        gifsContainer.appendChild(gifBox);
+      });
+    }
+
+    // start the party ===========================
+    getTrendingGifs();
+  </script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+.container {
+  max-width: 1000px;
+}
+
+.input {
+  margin-bottom: 30px;
+}
+
+.grid {
+  display: grid;
+  grid-auto-flow: dense;
+  grid-gap: 20px;
+  grid-auto-rows: minmax(200px, auto);
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  margin: 0 auto;
+}
+
+.grid-item:nth-child(6n) {
+  grid-column: auto / span 2;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+}
