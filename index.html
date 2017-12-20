@@ -4,14 +4,25 @@
   <meta charset="UTF-8">
   <title>Learning Vue Like a Boss!</title>
 
-  <!-- css -->
+  <!-- css -->   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.5.3/css/bulma.css">
 
   <!-- js -->
-
+  <script src="https://unpkg.com/vue"></script>  
 </head>
 <body>
 
+  <div id="app">
+    hello i am an app!      
+  </div>
 
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        message: ''
+      }
+    });
+  </script>
 </body>
 </html>
